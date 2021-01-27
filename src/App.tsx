@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 //Components
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
@@ -7,6 +7,7 @@ import Drawer from '@material-ui/core/Drawer';
 import Grid from '@material-ui/core/Grid';
 import Item from './components/Item/index';
 import Cart from './components/Cart';
+import { getAllProducts } from './services/productsService';
 
 import Linearprogress from '@material-ui/core/LinearProgress';
 //styles
@@ -26,17 +27,18 @@ export type CartItemType = {
   amount: number; //my own property
 };
 
-const getProducts = async (): Promise<CartItemType[]> =>
-  await (await fetch('https://fakestoreapi.com/products')).json();
-
 const App = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([] as CartItemType[]);
 
   const { data, isLoading, error } = useQuery<CartItemType[]>(
     'products',
-    getProducts,
+    async (): Promise<CartItemType[]> => {
+      const { data } = await getAllProducts();
+      return data;
+    },
   );
+
   console.log('data ', data);
 
   const getTotalItems = (items: CartItemType[]) =>

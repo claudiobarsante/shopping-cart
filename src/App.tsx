@@ -39,25 +39,27 @@ const App = () => {
     },
   );
 
-  console.log('data ', data);
-
   const getTotalItems = (items: CartItemType[]) =>
     items.reduce((accumulator: number, item) => accumulator + item.amount, 0);
 
-  const handleAddToCart = (selectedItem: CartItemType) => {
-    setCartItems(prev => {
-      //1.Is the item already in the cart ?
-      const isItemInCart = prev.find(item => item.id === selectedItem.id);
-      if (isItemInCart) {
-        return prev.map(item =>
-          item.id === selectedItem.id
-            ? { ...item, amount: item.amount + 1 }
-            : item,
-        );
-      }
-      //2.Add new item with amount=1
-      return [...prev, { ...selectedItem, amount: 1 }];
-    });
+  const handleItemToCart = (selectedItem: CartItemType) => {
+    let updatedCart = [];
+    //1.Is the item already in the cart ?
+    const isItemInCart = cartItems.find(item => item.id === selectedItem.id);
+    if (isItemInCart) {
+      updatedCart = cartItems.map(item =>
+        item.id === selectedItem.id
+          ? {
+              ...item,
+              amount: item.amount + 1,
+            }
+          : item,
+      );
+    } else {
+      //Add new item with amount=1
+      updatedCart = [...cartItems, { ...selectedItem, amount: 1 }];
+    }
+    setCartItems(updatedCart);
   };
 
   const handleRemoveFromCart = (id: number) => {
@@ -86,7 +88,7 @@ const App = () => {
         >
           <Cart
             cartItems={cartItems}
-            addToCart={handleAddToCart}
+            addToCart={handleItemToCart}
             removeFromCart={handleRemoveFromCart}
           />
         </Drawer>
@@ -98,7 +100,7 @@ const App = () => {
         <Grid container spacing={3}>
           {data?.map(item => (
             <Grid item key={item.id} xs={12} sm={4}>
-              <Item item={item} handleAddToCart={handleAddToCart} />
+              <Item item={item} handleAddToCart={handleItemToCart} />
             </Grid>
           ))}
         </Grid>

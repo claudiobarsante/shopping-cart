@@ -11,6 +11,8 @@ import Cart from './components/Cart';
 import Linearprogress from '@material-ui/core/LinearProgress';
 //styles
 import { Container, StyledButton } from './App.Styles';
+import GlobalStyle from './styles/global';
+
 //Api --> fakestoreapi.com
 //types from fakestoreapi.com
 
@@ -73,31 +75,34 @@ const App = () => {
   if (error) return <div>Something went wrong</div>;
 
   return (
-    <Container>
-      <Drawer
-        anchor="right"
-        open={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-      >
-        <Cart
-          cartItems={cartItems}
-          addToCart={handleAddToCart}
-          removeFromCart={handleRemoveFromCart}
-        />
-      </Drawer>
-      <StyledButton onClick={() => setIsCartOpen(true)}>
-        <Badge badgeContent={getTotalItems(cartItems)} color="primary">
-          <AddShoppingCartIcon />
-        </Badge>
-      </StyledButton>
-      <Grid container spacing={3}>
-        {data?.map(item => (
-          <Grid item key={item.id} xs={12} sm={4}>
-            <Item item={item} handleAddToCart={handleAddToCart} />
-          </Grid>
-        ))}
-      </Grid>
-    </Container>
+    <>
+      <Container>
+        <Drawer
+          anchor="right"
+          open={isCartOpen}
+          onClose={() => setIsCartOpen(false)}
+        >
+          <Cart
+            cartItems={cartItems}
+            addToCart={handleAddToCart}
+            removeFromCart={handleRemoveFromCart}
+          />
+        </Drawer>
+        <StyledButton onClick={() => setIsCartOpen(true)}>
+          <Badge badgeContent={getTotalItems(cartItems)} color="primary">
+            <AddShoppingCartIcon />
+          </Badge>
+        </StyledButton>
+        <Grid container spacing={3}>
+          {data?.map(item => (
+            <Grid item key={item.id} xs={12} sm={4}>
+              <Item item={item} handleAddToCart={handleAddToCart} />
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+      <GlobalStyle />
+    </>
   );
 };
 

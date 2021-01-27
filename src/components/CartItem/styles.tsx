@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  font-family: Arial, Helvetica, sans-serif;
+  // font-family: Roboto;
   border-bottom: 1px solid lightblue;
   padding-bottom: 20px;
 
